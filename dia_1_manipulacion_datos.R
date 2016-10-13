@@ -1,6 +1,6 @@
 ###### Manipulacion de datos usando dplyr y tidyr
 
-# Curso Ecofisiologia y comportamiento en contexto evolutivo - UPTC - 2016
+# Practica Corta en Icesi - Lab de Gustavo Londoño - 2016
 # Por Santiago David
 
 ###### Instalar paquetes

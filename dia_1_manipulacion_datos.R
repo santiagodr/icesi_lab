@@ -23,6 +23,7 @@ library(ggplot2)
 data(gapminder)
 head(gapminder)   
 
+gapcorta <- read.csv("gapminder_wide.csv")
 
 # Explicar uso de "pipes" o tubos %>% 
 
@@ -76,7 +77,7 @@ gapminder %>%
 gapminder %>% 
   filter(year == 2002)
 
-gapminder %>%
+primero <- gapminder %>%
   filter(continent =='Europe',
          year==1987)
 
@@ -104,6 +105,9 @@ gapminder %>%
   arrange(gdpPercap)
 
 gapminder %>% 
+  arrange(desc(pop))
+
+gapminder %>% 
   arrange(desc(lifeExp))
 
 #########################
@@ -120,7 +124,7 @@ gapminder %>%
 
 gapminder %>%
   group_by(continent) %>%
-  summarize(mean = mean(lifeExp))
+  summarize(pilar = mean(lifeExp))
 
 gapminder %>% 
   group_by(continent, year) %>%
@@ -129,6 +133,22 @@ gapminder %>%
 
 ### Ejercicio 1 - Cual es la media  de expectativa de vida y media poblacional para cada pais en America en el año 1987
 
+gapminder %>%
+  filter(continent=="Americas")%>%
+  group_by(year=1987)%>%
+  group_by(country)%>%
+  summarize(mean=mean(lifeExp))
+
+gapminder %>% 
+  filter(continent == "Americas" & year == "1987") %>% 
+  group_by(country) %>% 
+  summarize(meanlifeExp = mean(lifeExp), meanpop = mean(pop))
+
+gapminder %>% 
+  filter(continent == "Americas")%>%
+  group_by(year == 1987)%>%
+  group_by(country)%>%
+  summarize(mean1 = mean(lifeExp) , mean2 = mean(pop))
 
 
 ##### "gather" y "spread"
@@ -157,12 +177,12 @@ C %>%
 
 
 ##### practicar usando base de datos
-gap_wide <- read.csv("gapminder_wide.csv")
+gapcorta <- read.csv("gapminder_wide.csv")
 
 ### Ejercicio: examine la base de datos... cual puede ser una forma de simplificar esta base de datos?
 
 # poner columnas similares en una sola columna
-gaplong <- gap_wide %>%
+gaplong <- gapcorta %>%
   gather(obstype_year, obs_values, 
          starts_with("gdpPercap"), 
          starts_with("pop"),
@@ -175,6 +195,10 @@ head(gaplong)
 gaplong_separate <- gaplong %>%
   separate(obstype_year, into = c("obstype", "year"))
 
-# Ejercicio 2: usando gaplong, calcule la media de expectativa de vida para cada continente
+# Ejercicio 2: usando gaplongseparate, calcule la media de expectativa de vida para cada continente
 
+gaplong_separate %>% 
+  group_by(continent) %>% 
+  filter(obstype == "lifeExp") %>% 
+  summarize(mean = mean(obs_values))
 
